@@ -23,6 +23,10 @@ class Evaluator {
 		let components = this.scanExpression(filtered_expression);
 		if(!components) return "error";
 
+		components = this.solveSubexpression(components);
+		if(!components) return NaN;
+		if(components == "error") return "error";
+
 		components = this.replaceVariable(components);
 		if(!components) return "error";
 
@@ -98,6 +102,21 @@ class Evaluator {
 			}
 		}
 		return { components: new_components, operations: operations };
+	}
+	/* @param{Array} */
+	solveSubexpression(components) {
+		let new_components = components;
+		for(let i=0;i<new_components.length;i++) {
+			console.log(new_components[i]);
+			if(new_components[i][0] == "(") {
+				const subexpression = new_components[i].substring(1, new_components[i].length - 1);
+				const result = this.evaluate(subexpression);
+				if(!result) return NaN;
+				if(result == "error") return "error";
+				new_components[i] = result;
+			}
+		}
+		return new_components;
 	}
 	/* @param{Array} */
 	replaceVariable(components) {
