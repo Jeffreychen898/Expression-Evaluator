@@ -6,6 +6,5 @@ function eval() {
 	const expression = document.getElementById("field").value;
 	const result = evaluator.evaluate(expression);
 	const result_element = document.getElementById("result");
-	result_element.innerHTML = "";
-	console.log(result);
+	result_element.innerHTML = (result)?result:"error";
 }
